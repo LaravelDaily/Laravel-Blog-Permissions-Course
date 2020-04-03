@@ -15,7 +15,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
+        $articles = Article::with('user')->get();
 
         return view('articles.index', compact('articles'));
     }
@@ -35,12 +35,18 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        Article::create($request->all() + ['user_id' => auth()->id()]);
+        Article::create($request->all() +
+            [
+                'user_id' => auth()->id(),
+                'published_at' => (auth()->user()->is_admin || auth()->user()->is_publisher)
+                    && $request->input('published') ? now() : null
+            ]
+        );
 
         return redirect()->route('articles.index');
     }
@@ -48,7 +54,7 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Article  $article
+     * @param \App\Article $article
      * @return \Illuminate\Http\Response
      */
     public function edit(Article $article)
@@ -61,13 +67,17 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Article  $article
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Article $article
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Article $article)
     {
-        $article->update($request->all());
+        $data = $request->all();
+        if (auth()->user()->is_admin || auth()->user()->is_publisher) {
+            $data['published_at'] = $request->input('published') ? now() : null;
+        }
+        $article->update($data);
 
         return redirect()->route('articles.index');
     }
@@ -75,7 +85,7 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Article  $article
+     * @param \App\Article $article
      * @return \Illuminate\Http\Response
      */
     public function destroy(Article $article)

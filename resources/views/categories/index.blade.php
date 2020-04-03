@@ -5,35 +5,27 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Articles') }}</div>
+                <div class="card-header">{{ __('Categories') }}</div>
 
                 <div class="card-body">
-                    <a class="btn btn-primary" href="{{ route('articles.create') }}">New Article</a>
+                    <a class="btn btn-primary" href="{{ route('categories.create') }}">New Category</a>
                     <br /><br />
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Title</th>
-                            @if (auth()->user()->is_admin)
-                                <th>User</th>
-                            @endif
+                            <th>Name</th>
                             <th>Created at</th>
-                            <th>Published at</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                            @forelse ($articles as $article)
+                            @forelse ($categories as $category)
                                 <tr>
-                                    <td>{{ $article->title }}</td>
-                                    @if (auth()->user()->is_admin)
-                                        <td>{{ $article->user->name }}</td>
-                                    @endif
-                                    <td>{{ $article->created_at }}</td>
-                                    <td>{{ $article->published_at }}</td>
+                                    <td>{{ $category->name }}</td>
+                                    <td>{{ $category->created_at }}</td>
                                     <td>
-                                        <a href="{{ route('articles.edit', $article->id) }}" class="btn btn-sm btn-info">Edit</a>
-                                        <form action="{{ route('articles.destroy', $article->id) }}" method="POST" style="display: inline">
+                                        <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-info">Edit</a>
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display: inline">
                                             @csrf
                                             @method('DELETE')
                                             <input type="submit" class="btn btn-sm btn-danger" value="Delete"
@@ -43,7 +35,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center">No articles found.</td>
+                                    <td colspan="3" class="text-center">No categories found.</td>
                                 </tr>
                             @endforelse
                         </tbody>

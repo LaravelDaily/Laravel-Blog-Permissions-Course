@@ -31,6 +31,13 @@
                             @endforeach
                         </select>
                         <br />
+
+                        @if (auth()->user()->is_publisher || auth()->user()->is_admin)
+                        <input type="checkbox" name="published" value="1"
+                               @if ($article->published_at) checked @endif /> Published
+                        <br /><br />
+                        @endif
+
                         <input type="submit" value=" Update Article " class="btn btn-primary" />
                     </form>
                 </div>
