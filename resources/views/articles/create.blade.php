@@ -30,10 +30,10 @@
                         </select>
                         <br />
 
-                        @if (auth()->user()->is_publisher || auth()->user()->is_admin)
+                        @can('publish-articles')
                         <input type="checkbox" name="published" value="1" /> Published
                         <br /><br />
-                        @endif
+                        @endcan
 
                         <input type="submit" value=" Save Article " class="btn btn-primary" />
                     </form>

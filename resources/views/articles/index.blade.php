@@ -14,9 +14,9 @@
                         <thead>
                         <tr>
                             <th>Title</th>
-                            @if (auth()->user()->is_admin)
+                            @can('see-article-user')
                                 <th>User</th>
-                            @endif
+                            @endcan
                             <th>Created at</th>
                             <th>Published at</th>
                             <th></th>
@@ -26,9 +26,9 @@
                             @forelse ($articles as $article)
                                 <tr>
                                     <td>{{ $article->title }}</td>
-                                    @if (auth()->user()->is_admin)
+                                    @can('see-article-user')
                                         <td>{{ $article->user->name }}</td>
-                                    @endif
+                                    @endcan
                                     <td>{{ $article->created_at }}</td>
                                     <td>{{ $article->published_at }}</td>
                                     <td>
