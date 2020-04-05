@@ -41,9 +41,10 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+        $organizationId = auth()->user()->organization_id ? auth()->user()->organization_id : auth()->id();
         Article::create($request->all() +
             [
-                'user_id' => auth()->id(),
+                'user_id' => $organizationId,
                 'published_at' => Gate::allows('publish-articles')
                     && $request->input('published') ? now() : null
             ]

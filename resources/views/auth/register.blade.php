@@ -9,6 +9,7 @@
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
+                        <input type="hidden" name="organization_id" value="{{ request('organization_id', '') }}" />
                         @csrf
 
                         <div class="form-group row">

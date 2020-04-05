@@ -41,6 +41,9 @@
                         <!-- Authentication Links -->
                         @auth
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('invite') }}">{{ __('Invite') }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('articles.index') }}">{{ __('Articles') }}</a>
                             </li>
                             @can('manage-categories')
