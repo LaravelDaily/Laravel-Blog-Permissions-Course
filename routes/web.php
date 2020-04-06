@@ -25,6 +25,11 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('articles', 'ArticleController');
     Route::view('invite', 'invite')->name('invite');
 
+    Route::get('join', 'JoinController@create')->name('join.create');
+    Route::post('join', 'JoinController@store')->name('join.store');
+
+    Route::get('organization/{organization_id}', 'JoinController@organization')->name('organization');
+
     // Administrator routes
     Route::group(['middleware' => 'is_admin'], function() {
         Route::resource('categories', 'CategoryController');

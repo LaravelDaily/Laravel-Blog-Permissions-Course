@@ -46,4 +46,24 @@ class User extends Authenticatable
     {
         return $this->role_id == 3;
     }
+
+    public function organizations()
+    {
+        return $this->belongsToMany(User::class, 'organization_user', 'user_id', 'organization_id');
+    }
+
+    public function getOrganizationIdAttribute()
+    {
+        if (session('organization_id')) {
+            return session('organization_id');
+        }
+
+        $organization = $this->organizations()->first();
+        if ($organization) {
+            session(['organization_id' => $organization->id, 'organization_name' => $organization->name]);
+            return $organization->id;
+        }
+
+        return NULL;
+    }
 }
